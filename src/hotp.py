@@ -1,11 +1,12 @@
-from hashlib import sha1
+from hashlib import sha1, sha256, sha512
 import hmac
 
 
 class Hotp:
-    def __init__(self, secret, code_digits=6):
+    def __init__(self, secret, code_digits=6, algorithm="sha1"):
         self.secret = secret.encode()
         self.code_digits = code_digits
+        self.hash_algorithm = self.get_hash_algorithm(algorithm)
 
     def generate_code(self, counter):
         self._set_counter(counter)
@@ -15,7 +16,7 @@ class Hotp:
         return self.compute_hotp(snum)
 
     def hmac_sha1(self):
-        digester = hmac.new(self.secret, self.counter, sha1)
+        digester = hmac.new(self.secret, self.counter, self.hash_algorithm)
         return digester.digest()
 
     def dynamic_truncation(self, hmac_result):
@@ -35,3 +36,14 @@ class Hotp:
 
     def _set_counter(self, counter):
         self.counter = counter.to_bytes(8, byteorder="big")
+
+    def get_hash_algorithm(self, algorithm):
+        match algorithm.lower():
+            case "sha1":
+                return sha1
+            case "sha256":
+                return sha256
+            case "sha512":
+                return sha512
+            case _:
+                raise Exception("Invalid Algorithm")
