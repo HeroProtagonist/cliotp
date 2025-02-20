@@ -4,9 +4,11 @@ import hmac
 
 class Hotp:
     def __init__(self, secret, code_digits=6, algorithm="sha1"):
-        self.secret = secret.encode()
+        algorithm, secret = self._get_hash_algorithm_and_secret(algorithm, secret)
+
         self.code_digits = code_digits
-        self.hash_algorithm = self.get_hash_algorithm(algorithm)
+        self.secret = secret.encode()
+        self.hash_algorithm = algorithm
 
     def generate_code(self, counter):
         self._set_counter(counter)
@@ -16,6 +18,7 @@ class Hotp:
         return self.compute_hotp(snum)
 
     def hmac_sha1(self):
+        # breakpoint()
         digester = hmac.new(self.secret, self.counter, self.hash_algorithm)
         return digester.digest()
 
@@ -37,13 +40,19 @@ class Hotp:
     def _set_counter(self, counter):
         self.counter = counter.to_bytes(8, byteorder="big")
 
-    def get_hash_algorithm(self, algorithm):
+    def _get_hash_algorithm_and_secret(self, algorithm, secret):
         match algorithm.lower():
             case "sha1":
-                return sha1
+                return sha1, secret
             case "sha256":
-                return sha256
+                return sha256, self._pad_secret(secret, 32)
             case "sha512":
-                return sha512
+                return sha512, self._pad_secret(secret, 64)
             case _:
                 raise Exception("Invalid Algorithm")
+
+    def _pad_secret(self, secret, length):
+        while len(secret) < length:
+            secret += secret
+
+        return secret[:length]
