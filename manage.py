@@ -6,6 +6,7 @@ def init_django():
         return
 
     settings.configure(
+        DEFAULT_AUTO_FIELD="django.db.models.AutoField",
         INSTALLED_APPS=[
             "db",
         ],
