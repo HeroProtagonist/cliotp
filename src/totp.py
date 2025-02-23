@@ -7,7 +7,7 @@ class Totp:
         self.hotp = Hotp(secret, code_digits=code_digits, algorithm=algorithm)
         self.time_step = time_step
 
-    def generate_code(self, current_timestamp):
+    def generate_code(self, current_timestamp=None):
         current_timestamp = current_timestamp or int(
             datetime.now(tz=timezone.utc).timestamp()
         )
