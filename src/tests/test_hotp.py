@@ -8,7 +8,7 @@ class HotpTestCase(unittest.TestCase):
     def setUp(self):
         self.hotp = Hotp("12345678901234567890")
 
-    def test_hmac_sha1(self):
+    def test_hmac_sha(self):
         expected_hex = [
             "cc93cf18508d94934c64b65d8ba7667fb7cde4b0",
             "75a48a19d4cbe100644e8ac1397eea747a2d33ab",
@@ -25,7 +25,7 @@ class HotpTestCase(unittest.TestCase):
         hex = []
         for i in range(10):
             self.hotp._set_counter(i)
-            hex.append(self.hotp.hmac_sha1().hex())
+            hex.append(self.hotp.hmac_sha().hex())
 
         self.assertEqual(expected_hex, hex)
 
@@ -46,7 +46,7 @@ class HotpTestCase(unittest.TestCase):
         values = []
         for i in range(10):
             self.hotp._set_counter(i)
-            values.append(self.hotp.dynamic_truncation(self.hotp.hmac_sha1()))
+            values.append(self.hotp.dynamic_truncation(self.hotp.hmac_sha()))
 
         self.assertEqual(expected_values, values)
 

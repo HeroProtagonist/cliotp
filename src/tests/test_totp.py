@@ -6,7 +6,10 @@ from src.totp import Totp
 # Expected values from Appendix B
 class TotpTestCase(unittest.TestCase):
     def setUp(self):
-        self.secret = "12345678901234567890"
+        self.secret = self.pad_secret("12345678901234567890")
+        self.secret_256 = self.pad_secret("12345678901234567890", 32)
+        self.secret_512 = self.pad_secret("12345678901234567890", 64)
+
         self.times = [
             59,
             1111111109,
@@ -15,6 +18,12 @@ class TotpTestCase(unittest.TestCase):
             2000000000,
             20000000000,
         ]
+
+    def pad_secret(self, secret, length=20):
+        while len(secret) < length:
+            secret += secret
+
+        return secret[:length]
 
     def test_sha1(self):
         expected_codes = [
@@ -42,7 +51,7 @@ class TotpTestCase(unittest.TestCase):
             77737706,
         ]
 
-        totp = Totp(self.secret, algorithm="sha256")
+        totp = Totp(self.secret_256, algorithm="sha256")
 
         codes = [totp.generate_code(t) for t in self.times]
 
@@ -58,7 +67,7 @@ class TotpTestCase(unittest.TestCase):
             47863826,
         ]
 
-        totp = Totp(self.secret, algorithm="sha512")
+        totp = Totp(self.secret_512, algorithm="sha512")
 
         codes = [totp.generate_code(t) for t in self.times]
 
