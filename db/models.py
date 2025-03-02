@@ -23,6 +23,10 @@ class Account(models.Model):
     service = models.CharField(max_length=200)
     seed = models.CharField(max_length=256)
 
+    def tags(self):
+        account_tags = self.tag_set.all()
+        return ", ".join([tag.name for tag in account_tags])
+
 
 class Tag(models.Model):
     group = models.ForeignKey(Group, on_delete=models.CASCADE)
