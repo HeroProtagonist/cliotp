@@ -4,6 +4,7 @@ from src.totp import Totp
 from src.secret import Secret
 
 
+# https://datatracker.ietf.org/doc/html/rfc6238
 # Expected values from Appendix B
 class TotpTestCase(unittest.TestCase):
     def setUp(self):

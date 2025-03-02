@@ -4,6 +4,7 @@ from src.hotp import Hotp
 from src.secret import Secret
 
 
+# https://datatracker.ietf.org/doc/html/rfc4226
 # Expected values from Appendix D
 class HotpTestCase(unittest.TestCase):
     def setUp(self):
