@@ -1,12 +1,14 @@
 import unittest
 
 from src.hotp import Hotp
+from src.secret import Secret
 
 
 # Expected values from Appendix D
 class HotpTestCase(unittest.TestCase):
     def setUp(self):
-        self.hotp = Hotp("12345678901234567890")
+        secret = Secret.from_string("12345678901234567890")
+        self.hotp = Hotp(secret)
 
     def test_hmac_sha(self):
         expected_hex = [

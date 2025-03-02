@@ -1,6 +1,7 @@
 import unittest
 
 from src.totp import Totp
+from src.secret import Secret
 
 
 # Expected values from Appendix B
@@ -23,7 +24,7 @@ class TotpTestCase(unittest.TestCase):
         while len(secret) < length:
             secret += secret
 
-        return secret[:length]
+        return Secret.from_string(secret[:length])
 
     def test_sha1(self):
         expected_codes = [

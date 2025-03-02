@@ -7,7 +7,7 @@ class Hotp:
         algorithm = self._get_hash_algorithm(algorithm)
 
         self.code_digits = code_digits
-        self.secret = secret.encode()
+        self.secret = secret.bytes
         self.hash_algorithm = algorithm
 
     def generate_code(self, counter):
