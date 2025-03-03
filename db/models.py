@@ -18,10 +18,30 @@ class Group(BaseModel):
 
 
 class Account(models.Model):
+    SHA1 = "0"
+    SHA256 = "1"
+    SHA512 = "2"
+
+    ALGORITHM_CHOICES = {
+        SHA1: "sha1",
+        SHA256: "sha256",
+        SHA512: "sha512",
+    }
+
     group = models.ForeignKey(Group, on_delete=models.CASCADE)
     name = models.CharField(max_length=200)
     service = models.CharField(max_length=200)
     seed = models.CharField(max_length=256)
+    period = models.IntegerField(default=30)
+    digits = models.IntegerField(default=6)
+    algorithm = models.CharField(
+        max_length=10,
+        choices=ALGORITHM_CHOICES,
+        default=SHA1,
+    )
+
+    def get_algorithm(self):
+        return self.get_algorithm_display()
 
     def tags(self):
         account_tags = self.tag_set.all()
