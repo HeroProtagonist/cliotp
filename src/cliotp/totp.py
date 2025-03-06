@@ -1,5 +1,5 @@
 from datetime import timezone, datetime
-from src.hotp import Hotp
+from .hotp import Hotp
 
 
 class Totp:

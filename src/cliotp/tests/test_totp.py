@@ -1,7 +1,7 @@
 import unittest
 
-from src.totp import Totp
-from src.secret import Secret
+from cliotp.totp import Totp
+from cliotp.secret import Secret
 
 
 # https://datatracker.ietf.org/doc/html/rfc6238

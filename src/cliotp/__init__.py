@@ -1,7 +1,7 @@
 import click
 from db.models import Group, Account, Tag
-from src.totp import Totp
-from src.secret import Secret
+from .totp import Totp
+from .secret import Secret
 from datetime import timezone, datetime
 
 import time
