@@ -68,8 +68,7 @@ def remove(id):
 def code(id):
     group, _ = Group.objects.get_or_create(name=GroupName)
     account = group.account_set.get(id=id)
-    # time_step = account.period
-    time_step = 3
+    time_step = account.period
 
     totp = Totp(
         Secret.from_base32(account.seed),
