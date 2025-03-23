@@ -3,6 +3,7 @@ from db.models import Group, Account, Tag
 from .totp import Totp
 from .secret import Secret
 from datetime import timezone, datetime
+from django.core.management import call_command
 
 import time
 from rich.progress import Progress, BarColumn, TimeRemainingColumn, TextColumn
@@ -23,11 +24,18 @@ def count_down(start, code, time_step):
             progress.update(task, advance=1)
             time.sleep(1)
 
+
 GroupName = "default"
+
 
 @click.group()
 def cli():
     pass
+
+
+@cli.command()
+def init():
+    call_command("migrate", "db")
 
 
 @cli.command()
