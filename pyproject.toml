@@ -1,7 +1,7 @@
 [project]
 name = "cliotp"
 version = "0.1.0"
-description = "Add your description here"
+description = "Cli tool to manage and generate TOTPs"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
