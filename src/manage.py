@@ -1,3 +1,11 @@
+import os
+from pathlib import Path
+
+DB_ROOT_DIR = Path(os.getenv('CLIOTP_DB_PATH', Path.home()))
+DB_DIR = DB_ROOT_DIR.joinpath(".cliotp")
+
+DB_DIR.mkdir(exist_ok=True)
+
 def init_django():
     import django
     from django.conf import settings
@@ -13,7 +21,7 @@ def init_django():
         DATABASES={
             "default": {
                 "ENGINE": "django.db.backends.sqlite3",
-                "NAME": "cliopt.sqlite3",
+                "NAME": str(DB_DIR / "cliopt.sqlite3"),
             }
         },
     )
