@@ -77,17 +77,19 @@ def code(id):
     group, _ = Group.objects.get_or_create(name=GroupName)
     account = group.account_set.get(id=id)
     time_step = account.period
+    code_length = account.digits
 
     totp = Totp(
         Secret.from_base32(account.seed),
-        code_digits=6,
+        code_digits=code_length,
         algorithm=account.get_algorithm(),
         time_step=time_step,
     )
 
     while 1:
         start = datetime.now(tz=timezone.utc).second % time_step
-        count_down(start, totp.generate_code(), time_step)
+        code = str(totp.generate_code()).zfill(code_length)
+        count_down(start, code, time_step)
 
 
 @cli.command()
