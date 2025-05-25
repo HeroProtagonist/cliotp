@@ -4,15 +4,18 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('db', '0002_account_algorithm_account_digits_account_period'),
+        ("db", "0002_account_algorithm_account_digits_account_period"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='account',
-            name='algorithm',
-            field=models.CharField(choices=[('0', 'sha1'), ('1', 'sha256'), ('2', 'sha512')], default='0', max_length=10),
+            model_name="account",
+            name="algorithm",
+            field=models.CharField(
+                choices=[("0", "sha1"), ("1", "sha256"), ("2", "sha512")],
+                default="0",
+                max_length=10,
+            ),
         ),
     ]

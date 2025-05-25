@@ -15,6 +15,7 @@ class BaseModel(models.Model):
 
 class Group(BaseModel):
     name = models.CharField(max_length=200)
+    salt = models.BinaryField(max_length=32)
 
 
 class Account(models.Model):
