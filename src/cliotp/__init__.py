@@ -9,6 +9,11 @@ import time
 from rich.progress import Progress, BarColumn, TimeRemainingColumn, TextColumn
 from rich.console import Console
 from rich.table import Table
+from config import PASSWORD_FILE, DB_PATH, GROUP_NAME
+import os
+from pathlib import Path
+from cryptography.hazmat.primitives.kdf.argon2 import Argon2id
+import binascii
 
 
 def count_down(start, code, time_step):
@@ -25,7 +30,19 @@ def count_down(start, code, time_step):
             time.sleep(1)
 
 
-GroupName = "default"
+def generate_master_password(password, salt):
+    kdf = Argon2id(
+        salt=salt,
+        length=32,
+        iterations=1,
+        lanes=4,
+        memory_cost=2 * 1024 * 1024,
+        ad=None,
+        secret=None,
+    )
+
+    digest = kdf.derive(password.encode())
+    return binascii.hexlify(digest).decode()
 
 
 @click.group()
@@ -35,7 +52,21 @@ def cli():
 
 @cli.command()
 def init():
+    if Path(DB_PATH).is_file():
+        return
+
     call_command("migrate", "db")
+    Group.objects.get_or_create(name=GROUP_NAME, salt=os.urandom(16))
+
+
+@cli.command()
+def post_init():
+    password = click.prompt("Enter a password", type=str)
+    group = Group.objects.get(name=GROUP_NAME)
+
+    with open(PASSWORD_FILE, "a") as file:
+        master_password = generate_master_password(password=password, salt=group.salt)
+        file.write(master_password)
 
 
 @cli.command()
@@ -49,7 +80,7 @@ def init():
 )
 @click.option("-t", "--tag", default=[], help="Tags to apply", multiple=True)
 def add(service, seed, name, tag):
-    group, _ = Group.objects.get_or_create(name=GroupName)
+    group, _ = Group.objects.get_or_create(name=GROUP_NAME)
     click.echo(f"Adding {service}:{name}")
 
     account = Account.objects.create(service=service, seed=seed, name=name, group=group)
@@ -63,7 +94,7 @@ def add(service, seed, name, tag):
 @cli.command()
 @click.argument("id")
 def remove(id):
-    group, _ = Group.objects.get_or_create(name=GroupName)
+    group, _ = Group.objects.get_or_create(name=GROUP_NAME)
     account = group.account_set.get(id=id)
 
     click.echo(f"Removing {account.service}:{account.name}")
@@ -74,7 +105,7 @@ def remove(id):
 @cli.command()
 @click.argument("id")
 def code(id):
-    group, _ = Group.objects.get_or_create(name=GroupName)
+    group, _ = Group.objects.get_or_create(name=GROUP_NAME)
     account = group.account_set.get(id=id)
     time_step = account.period
     code_length = account.digits
@@ -100,7 +131,7 @@ def list():
     table.add_column("Name", style="magenta")
     table.add_column("Tags")
 
-    group, _ = Group.objects.get_or_create(name=GroupName)
+    group, _ = Group.objects.get_or_create(name=GROUP_NAME)
     accounts = group.account_set.all()
 
     for account in accounts:
