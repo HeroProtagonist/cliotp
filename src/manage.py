@@ -1,10 +1,7 @@
-import os
-from pathlib import Path
+from config import DB_PATH
 
-DB_ROOT_DIR = Path(os.getenv('CLIOTP_DB_PATH', Path.home()))
-DB_DIR = DB_ROOT_DIR.joinpath(".cliotp")
+# Based on https://abdus.dev/posts/django-orm-standalone/
 
-DB_DIR.mkdir(exist_ok=True)
 
 def init_django():
     import django
@@ -21,7 +18,7 @@ def init_django():
         DATABASES={
             "default": {
                 "ENGINE": "django.db.backends.sqlite3",
-                "NAME": str(DB_DIR / "cliopt.sqlite3"),
+                "NAME": DB_PATH,
             }
         },
     )
