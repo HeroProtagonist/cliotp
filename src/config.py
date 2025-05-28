@@ -1,6 +1,10 @@
 import os
 from pathlib import Path
 
+from dotenv import load_dotenv
+
+load_dotenv()
+
 GROUP_NAME = "default"
 
 STORAGE_PATH = Path(os.getenv("CLIOTP_STORAGE_PATH", Path.home()))
