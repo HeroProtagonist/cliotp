@@ -12,8 +12,7 @@ from rich.table import Table
 from config import PASSWORD_FILE, DB_PATH, GROUP_NAME
 import os
 from pathlib import Path
-from cryptography.hazmat.primitives.kdf.argon2 import Argon2id
-import binascii
+from crypto import Crypto
 
 
 def count_down(start, code, time_step):
@@ -28,21 +27,6 @@ def count_down(start, code, time_step):
         while not progress.finished:
             progress.update(task, advance=1)
             time.sleep(1)
-
-
-def generate_master_password(password, salt):
-    kdf = Argon2id(
-        salt=salt,
-        length=32,
-        iterations=1,
-        lanes=4,
-        memory_cost=2 * 1024 * 1024,
-        ad=None,
-        secret=None,
-    )
-
-    digest = kdf.derive(password.encode())
-    return binascii.hexlify(digest).decode()
 
 
 @click.group()
@@ -64,9 +48,7 @@ def post_init():
     password = click.prompt("Enter a password", type=str)
     group = Group.objects.get(name=GROUP_NAME)
 
-    with open(PASSWORD_FILE, "a") as file:
-        master_password = generate_master_password(password=password, salt=group.salt)
-        file.write(master_password)
+    Crypto.save_master_password(password=password, salt=group.salt)
 
 
 @cli.command()
@@ -83,7 +65,13 @@ def add(service, seed, name, tag):
     group, _ = Group.objects.get_or_create(name=GROUP_NAME)
     click.echo(f"Adding {service}:{name}")
 
-    account = Account.objects.create(service=service, seed=seed, name=name, group=group)
+    account = Account.objects.create(
+        service=service,
+        seed=seed,
+        name=name,
+        group=group,
+        initialization_vector=Crypto.random_bytes(),
+    )
 
     if tag:
         for t in tag:

@@ -1,5 +1,6 @@
 from django.db import models
 from manage import init_django
+from crypto import Crypto
 
 init_django()
 
@@ -41,6 +42,17 @@ class Account(models.Model):
         choices=ALGORITHM_CHOICES,
         default=SHA1,
     )
+
+    @property
+    def seed(self):
+        crypto = Crypto(self)
+        return crypto.decrypt(self.encrypted_seed)
+
+    @seed.setter
+    def seed(self, plaintext):
+        crypto = Crypto(self)
+        self.encrypted_seed = crypto.encrypt(plaintext)
+        return self.encrypted_seed
 
     def get_algorithm(self):
         return self.get_algorithm_display()
