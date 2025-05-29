@@ -32,7 +32,8 @@ class Account(models.Model):
     group = models.ForeignKey(Group, on_delete=models.CASCADE)
     name = models.CharField(max_length=200)
     service = models.CharField(max_length=200)
-    seed = models.CharField(max_length=256)
+    encrypted_seed = models.BinaryField(max_length=64)
+    initialization_vector = models.BinaryField(max_length=32)
     period = models.IntegerField(default=30)
     digits = models.IntegerField(default=6)
     algorithm = models.CharField(
