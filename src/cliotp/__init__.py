@@ -105,10 +105,13 @@ def code(id):
         time_step=time_step,
     )
 
-    while 1:
-        start = datetime.now(tz=timezone.utc).second % time_step
-        code = str(totp.generate_code()).zfill(code_length)
-        count_down(start, code, time_step)
+    try:
+        while 1:
+            start = datetime.now(tz=timezone.utc).second % time_step
+            code = str(totp.generate_code()).zfill(code_length)
+            count_down(start, code, time_step)
+    except KeyboardInterrupt:
+        pass
 
 
 @cli.command()
