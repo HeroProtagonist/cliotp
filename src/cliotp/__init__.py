@@ -83,7 +83,7 @@ def add(service, seed, name, tag):
 
     if tag:
         for t in tag:
-            tag_object = Tag.objects.get_or_create(group=group, name=t)
+            tag_object, _ = Tag.objects.get_or_create(group=group, name=t)
             tag_object.account.add(account)
 
 
