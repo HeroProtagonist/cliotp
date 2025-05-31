@@ -35,16 +35,24 @@ def cli():
 
 
 @cli.command()
-def init():
+@click.pass_context
+def init(ctx):
     if Path(DB_PATH).is_file():
+        click.echo(f"Already initialized: {DB_PATH}")
         return
 
     call_command("migrate", "db")
     Group.objects.get_or_create(name=GROUP_NAME, salt=os.urandom(16))
 
+    ctx.invoke(create_password)
+
 
 @cli.command()
-def post_init():
+def create_password():
+    if Path(PASSWORD_FILE).is_file():
+        click.echo(f"Password already saved: {PASSWORD_FILE}")
+        return
+
     password = click.prompt("Enter a password", type=str)
     group = Group.objects.get(name=GROUP_NAME)
 
