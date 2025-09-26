@@ -38,7 +38,7 @@ def cli():
 @click.pass_context
 def init(ctx):
     if Path(DB_PATH).is_file():
-        click.echo(f"Already initialized: {DB_PATH}")
+        click.secho(f"Already initialized: {DB_PATH}", fg="yellow")
         return
 
     call_command("migrate", "db")
@@ -50,10 +50,12 @@ def init(ctx):
 @cli.command()
 def create_password():
     if Path(PASSWORD_FILE).is_file():
-        click.echo(f"Password already saved: {PASSWORD_FILE}")
+        click.secho(f"Password already saved: {PASSWORD_FILE}", fg="yellow")
         return
 
-    password = click.prompt("Enter a password", type=str)
+    password = click.prompt(
+        "Enter a password", type=str, confirmation_prompt=True, hide_input=True
+    )
     group = Group.objects.get(name=GROUP_NAME)
 
     Crypto.save_master_password(password=password, salt=group.salt)
@@ -71,7 +73,7 @@ def create_password():
 @click.option("-t", "--tag", default=[], help="Tags to apply", multiple=True)
 def add(service, seed, name, tag):
     group, _ = Group.objects.get_or_create(name=GROUP_NAME)
-    click.echo(f"Adding {service}:{name}")
+    click.secho(f"Adding {service}:{name}", fg="green")
 
     account = Account.objects.create(
         service=service,
@@ -93,7 +95,7 @@ def remove(id):
     group, _ = Group.objects.get_or_create(name=GROUP_NAME)
     account = group.account_set.get(id=id)
 
-    click.echo(f"Removing {account.service}:{account.name}")
+    click.secho(f"Removing {account.service}:{account.name}", fg="red")
 
     account.delete()
 
