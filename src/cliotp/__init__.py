@@ -99,10 +99,20 @@ def remove(id):
 
 
 @cli.command()
-@click.argument("id")
-def code(id):
+@click.argument("identifier")
+def code(identifier):
     group, _ = Group.objects.get_or_create(name=GROUP_NAME)
-    account = group.account_set.get(id=id)
+    account_set = group.account_set
+    account = (
+        account_set.filter(id=identifier).first()
+        if identifier.isdigit()
+        else group.account_set.filter(service=identifier).first()
+        or group.account_set.filter(name=identifier).first()
+    )
+
+    if not account:
+        return click.secho(f"No matching account found for {identifier}", fg="yellow")
+
     time_step = account.period
     code_length = account.digits
 
