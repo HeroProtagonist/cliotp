@@ -2,7 +2,9 @@
 name = "cliotp"
 version = "0.2.0"
 description = "Cli tool to manage and generate TOTPs"
+keywords = ["totp", "rfc6238", "rfc4226", "cli", "authenticator"]
 readme = "README.md"
+license = "MIT"
 requires-python = ">=3.10"
 dependencies = [
     "click>=8.1.8",
