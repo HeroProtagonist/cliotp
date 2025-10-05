@@ -1,6 +1,7 @@
 import os
 import time
 from datetime import datetime, timezone
+from multiprocessing import Process
 from pathlib import Path
 
 import click
@@ -40,6 +41,17 @@ def cli():
 @cli.command()
 @click.pass_context
 def init(ctx):
+    click.secho(
+        r"""
+     ______     __         __     ______     ______   ______
+    /\  ___\   /\ \       /\ \   /\  __ \   /\__  _\ /\  == \
+    \ \ \____  \ \ \____  \ \ \  \ \ \/\ \  \/_/\ \/ \ \  _-/
+     \ \_____\  \ \_____\  \ \_\  \ \_____\    \ \_\  \ \_\
+      \/_____/   \/_____/   \/_/   \/_____/     \/_/   \/_/
+    """,
+        fg="magenta",
+    )
+
     if Path(DB_PATH).is_file():
         click.secho(f"Already initialized: {DB_PATH}", fg="yellow")
         return
@@ -61,7 +73,16 @@ def create_password():
     )
     group = Group.objects.get(name=GROUP_NAME)
 
-    Crypto.save_master_password(password=password, salt=group.salt)
+    t = Process(
+        target=Crypto.save_master_password,
+        kwargs={"password": password, "salt": group.salt},
+    )
+    t.start()
+
+    console = Console()
+    with console.status("Deriving master password", spinner="bouncingBar") as status:
+        status.update(status="Deriving master password")
+        t.join()
 
 
 @cli.command()
