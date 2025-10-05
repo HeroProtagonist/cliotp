@@ -1,7 +1,7 @@
 import unittest
 
-from src.hotp import Hotp
-from src.secret import Secret
+from cliotp.hotp import Hotp
+from cliotp.secret import Secret
 
 
 # https://datatracker.ietf.org/doc/html/rfc4226
