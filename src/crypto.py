@@ -1,9 +1,11 @@
+import binascii
 import os
-from cryptography.hazmat.primitives.ciphers.algorithms import AES
+
 from cryptography.hazmat.primitives.ciphers import Cipher
+from cryptography.hazmat.primitives.ciphers.algorithms import AES
 from cryptography.hazmat.primitives.ciphers.modes import CBC
 from cryptography.hazmat.primitives.kdf.argon2 import Argon2id
-import binascii
+
 from config import PASSWORD_FILE
 
 

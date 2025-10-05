@@ -1,18 +1,21 @@
-import click
-from db.models import Group, Account, Tag
-from .totp import Totp
-from .secret import Secret
-from datetime import timezone, datetime
-from django.core.management import call_command
-
-import time
-from rich.progress import Progress, BarColumn, TimeRemainingColumn, TextColumn
-from rich.console import Console
-from rich.table import Table
-from config import PASSWORD_FILE, DB_PATH, GROUP_NAME
 import os
+import time
+from datetime import datetime, timezone
 from pathlib import Path
+
+import click
+from django.core.management import call_command
+from django.db.models import Q
+from rich.console import Console
+from rich.progress import BarColumn, Progress, TextColumn, TimeRemainingColumn
+from rich.table import Table
+
+from config import DB_PATH, GROUP_NAME, PASSWORD_FILE
 from crypto import Crypto
+from db.models import Account, Group, Tag
+
+from .secret import Secret
+from .totp import Totp
 
 
 def count_down(start, code, time_step):

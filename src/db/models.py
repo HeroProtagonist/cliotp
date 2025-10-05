@@ -1,6 +1,7 @@
 from django.db import models
-from manage import init_django
+
 from crypto import Crypto
+from manage import init_django
 
 init_django()
 

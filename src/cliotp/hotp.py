@@ -1,5 +1,5 @@
-from hashlib import sha1, sha256, sha512
 import hmac
+from hashlib import sha1, sha256, sha512
 
 
 class Hotp:
