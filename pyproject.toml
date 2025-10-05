@@ -13,9 +13,24 @@ dependencies = [
     "ruff>=0.9.6",
 ]
 
+# Use taskipy until uv supports this
+# https://github.com/astral-sh/uv/issues/5903
+[tool.taskipy.tasks]
+format = "task format_imports && task format_src"
+format_imports = "ruff check --select I --fix"
+format_src = "ruff format"
+test = "python -m unittest discover src"
+shell = "python src/manage.py shell"
+publish = "uv build && uv publish"
+
 [project.scripts]
 cliotp = "cliotp:cli"
 
 [build-system]
 requires = ["setuptools>=61"]
 build-backend = "setuptools.build_meta"
+
+[dependency-groups]
+dev = [
+    "taskipy>=1.14.1",
+]
