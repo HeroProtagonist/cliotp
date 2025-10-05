@@ -138,7 +138,13 @@ def code(identifier):
 
 
 @cli.command()
-def list():
+@click.option(
+    "-t",
+    "--term",
+    default="",
+    help="Searches service, name, and tags",
+)
+def list(term):
     table = Table(title="Accounts", show_lines=True)
     table.add_column("ID")
     table.add_column("Service", style="cyan")
@@ -146,7 +152,16 @@ def list():
     table.add_column("Tags")
 
     group, _ = Group.objects.get_or_create(name=GROUP_NAME)
-    accounts = group.account_set.all()
+
+    accounts = (
+        group.account_set.filter(
+            Q(service__contains=term)
+            | Q(name__contains=term)
+            | Q(tag__name__contains=term)
+        )
+        if term
+        else group.account_set.all()
+    )
 
     for account in accounts:
         table.add_row(str(account.id), account.service, account.name, account.tags())
