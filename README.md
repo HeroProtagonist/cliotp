@@ -1,21 +1,13 @@
 # 🔮 cliotp
 
-```
- ______     __         __     ______     ______   ______
-/\  ___\   /\ \       /\ \   /\  __ \   /\__  _\ /\  == \
-\ \ \____  \ \ \____  \ \ \  \ \ \/\ \  \/_/\ \/ \ \  _-/
- \ \_____\  \ \_____\  \ \_\  \ \_____\    \ \_\  \ \_\
-  \/_____/   \/_____/   \/_/   \/_____/     \/_/   \/_/
-```
-
 > [!IMPORTANT]
 > This project is very much a work in progres, but has the basic features for most use cases.
 
 Easily organize, store, and generate your one time passwords from the comfort of your terminal.
 
-![Demo usage](docs/assets/demo.gif)
+This library follows [rfc4226](https://datatracker.ietf.org/doc/html/rfc4226) and [rfc6238](https://datatracker.ietf.org/doc/html/rfc6238). It can serve as a replacement for authenticator apps, like Authy.
 
-This library follows [rfc4226](https://datatracker.ietf.org/doc/html/rfc4226) and [rfc6238](https://datatracker.ietf.org/doc/html/rfc6238). It can serve as a replacement for authenticator apps.
+![Demo usage](docs/assets/demo.gif)
 
 ## Installation
 Requires python >= 3.10
