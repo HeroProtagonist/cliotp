@@ -43,12 +43,12 @@ def cli():
 def init(ctx):
     click.secho(
         r"""
-     ______     __         __     ______     ______   ______
-    /\  ___\   /\ \       /\ \   /\  __ \   /\__  _\ /\  == \
-    \ \ \____  \ \ \____  \ \ \  \ \ \/\ \  \/_/\ \/ \ \  _-/
-     \ \_____\  \ \_____\  \ \_\  \ \_____\    \ \_\  \ \_\
-      \/_____/   \/_____/   \/_/   \/_____/     \/_/   \/_/
-    """,
+  ______     __         __     ______     ______   ______
+ /\  ___\   /\ \       /\ \   /\  __ \   /\__  _\ /\  == \
+ \ \ \____  \ \ \____  \ \ \  \ \ \/\ \  \/_/\ \/ \ \  _-/
+  \ \_____\  \ \_____\  \ \_\  \ \_____\    \ \_\  \ \_\
+   \/_____/   \/_____/   \/_/   \/_____/     \/_/   \/_/
+        """,
         fg="magenta",
     )
 
@@ -56,7 +56,7 @@ def init(ctx):
         click.secho(f"Already initialized: {DB_PATH}", fg="yellow")
         return
 
-    call_command("migrate", "db")
+    call_command("migrate", "db", verbosity=0)
     Group.objects.get_or_create(name=GROUP_NAME, salt=os.urandom(16))
 
     ctx.invoke(create_password)
