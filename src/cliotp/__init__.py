@@ -127,6 +127,11 @@ def remove(id):
 @cli.command()
 @click.argument("identifier")
 def code(identifier):
+    """Get TOTP code for given IDENTIFIER
+
+    IDENTIFIER can be ID, service, or name of an account. The code
+    for the first account will be generated in the case of multiple.
+    """
     group, _ = Group.objects.get_or_create(name=GROUP_NAME)
     account_set = group.account_set
     account = (
