@@ -1,6 +1,6 @@
 [project]
 name = "cliotp"
-version = "0.3.0"
+version = "0.3.1"
 description = "Cli tool to manage and generate TOTPs"
 keywords = ["totp", "rfc6238", "rfc4226", "cli", "authenticator"]
 readme = "README.md"
