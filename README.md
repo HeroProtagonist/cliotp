@@ -13,6 +13,8 @@
 
 Easily organize, store, and generate your one time passwords from the comfort of your terminal.
 
+![Demo usage](docs/assets/demo.gif)
+
 This library follows [rfc4226](https://datatracker.ietf.org/doc/html/rfc4226) and [rfc6238](https://datatracker.ietf.org/doc/html/rfc6238). It can serve as a replacement for authenticator apps.
 
 ## Installation
