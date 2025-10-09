@@ -1,7 +1,7 @@
 # 🔮 cliotp
 
 > [!IMPORTANT]
-> This project is very much a work in progres, but has the basic features for most use cases.
+> This project is very much a work in progress, but has the basic features for most use cases.
 
 Easily organize, store, and generate your one time passwords from the comfort of your terminal.
 
