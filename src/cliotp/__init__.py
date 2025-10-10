@@ -33,6 +33,7 @@ def count_down(start, code, time_step):
             time.sleep(1)
 
 
+@click.version_option()
 @click.group()
 def cli():
     pass
