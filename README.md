@@ -10,7 +10,7 @@ This library follows [rfc4226](https://datatracker.ietf.org/doc/html/rfc4226) an
 ![Demo usage](docs/assets/demo.gif)
 
 ## Installation
-Requires python >= 3.10
+Requires python >= 3.11
 
 `pip install cliotp`
 

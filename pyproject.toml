@@ -5,7 +5,7 @@ description = "Cli tool to manage and generate TOTPs"
 keywords = ["totp", "rfc6238", "rfc4226", "cli", "authenticator"]
 readme = "README.md"
 license = "MIT"
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 dependencies = [
     "click>=8.1.8",
     "cryptography>=45.0.2",
