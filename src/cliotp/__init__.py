@@ -15,6 +15,7 @@ from config import DB_PATH, GROUP_NAME, PASSWORD_FILE
 from crypto import Crypto
 from db.models import Account, Group, Tag
 
+from .mover import Mover
 from .secret import Secret
 from .totp import Totp
 
@@ -195,6 +196,37 @@ def list(term):
 
     console = Console()
     console.print(table)
+
+
+@click.option(
+    "-f",
+    "--filename",
+    help="Name of exported csv",
+)
+@click.option(
+    "-s",
+    "--silent",
+    is_flag=True,
+    help="Suppress failed row messages",
+)
+@cli.command()
+def export(filename, silent):
+    group, _ = Group.objects.get_or_create(name=GROUP_NAME)
+
+    mover = Mover(group=group, filename=filename)
+    failures = mover.export()
+
+    if not silent and failures:
+        for failure, error in failures:
+            click.secho(f"Failed to export {failure} => {error}", fg="red")
+
+
+@cli.command()
+def import_file():
+    group, _ = Group.objects.get_or_create(name=GROUP_NAME)
+
+    mover = Mover(group)
+    mover.import_file()
 
 
 if __name__ == "__main__":
