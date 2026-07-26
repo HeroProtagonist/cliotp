@@ -1,5 +1,7 @@
 # 🔮 cliotp
 
+[![GitHub Actions CI Workflow Status](https://github.com/HeroProtagonist/cliotp/actions/workflows/ci.yml/badge.svg)](https://github.com/HeroProtagonist/cliotp/actions/workflows/ci.yml)
+
 > [!IMPORTANT]
 > This project is very much a work in progress, but has the basic features for most use cases.
 
